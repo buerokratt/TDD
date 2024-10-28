@@ -37,8 +37,9 @@ This repository demonstrates large-scale, automated end-to-end testing using Pla
 
 All configurations, including GitHub API keys and test generation settings, are managed in `config.yml`.
 
-## Contributions
 ## Contributors
+[Playwright-specific developments](https://github.com/buerokratt/TDD-Playwright/graphs/contributors)
+[TDD-related developments in general](https://github.com/buerokratt/TDD/graphs/contributors)
 
 | Name         | GitHub Username | Role                     | Contributions                        |
 |--------------|-----------------|--------------------------|--------------------------------------|
