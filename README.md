@@ -11,7 +11,7 @@ This repository demonstrates large-scale, automated end-to-end testing using Pla
 
 ```
 ├── dsl/
-│   ├── example_resource.dsl      # High-level DSL definitions for each URL (resource)
+│   ├── example_resource.yml      # High-level DSL definitions for each URL (resource)
 ├── src/
 │   ├── test_generator.py         # Core script for translating DSL to Playwright tests
 │   ├── bug_report.py             # Script to automate GitHub issue creation for failed tests
