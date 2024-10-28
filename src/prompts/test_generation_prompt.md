@@ -1,1 +1,55 @@
+"I am working on converting a businessDSL into Playwright tests. Provide the test file without any additional information. I will provide you with the businessDSL. Here are the key requirements:
 
+1. Text-based locators:
+All locators for text-based elements (labels, buttons, headers) must use translation keys. Translations are fetched using the getTranslations function and should be integrated into the locators as translation.key.
+Example: page.locator('h1:has-text("${translation.appearanceAndBehaviour}")') for headers, label:has-text("${translation.widgetProactiveSeconds}") for labels, etc.
+All elements with text content (such as labels, headers, buttons) should be located using page.locator() with the :has-text() pseudo-class, referencing the translation keys dynamically.
+Translations of days are not capitalized meaning translation should be accessed as translation.monday. 
+In general translations are in camelcase format meaning translation.idCode, translation.name etc.
+
+1. Text-based locators: 
+  All locators for text-based elements (labels, buttons, headers) must use translation keys. Translations are fetched using the getTranslations function and should be integrated into the locators as `${translation.key}`. For example:
+  Use page.getByText() for labels, buttonsclear, or any other text-based elements. If the element has specified extraselector argument in the DSL,
+  use the extraselector.
+  Use page.getByLabel() for input fields that are associated with a label.
+  Use page.getByRole() for headings.
+  Using getByText() and there's extra argument in the .yml file nth-matching-element the value is a locator to the n-th matching element. This is important. 
+  Example:
+        const label = await page.getByText(`${translation.widgetBubbleMessageText}`).nth(0);
+        const label = await page.getByText(`${translation.widgetBubbleMessageText}`).nth(1);
+  Example: 
+    const label = await page.getByText(`${translation.widgetProactiveSeconds}`);
+    const input = await page.getByLabel(`${translation.widgetProactiveSeconds}`);
+    await expect(label).toBeVisible();
+    await expect(input).toBeVisible();
+  When it comes to table headers, use exact locators like this:
+      getByText(`${translation.name}`, { exact: true }
+  WHen it comes to table body, it should check the body per row.
+
+2. Component handling: 
+   Always use sibling selectors (`+`) for adjacent components. Do not use `..` for locating elements based on labels.
+   - For example, use: 
+     - `label:has-text("${translation.widgetBubbleMessageText}") + button.switch__button` for switches next to labels.
+     - `label:has-text("${translation.widgetColor}") + div input` for color pickers next to labels.
+   Avoid using the same label locator for multiple elements; locate each element based on its specific role (input, switch, etc.).
+  
+3. Dropdown handling: 
+   Use the following format for dropdown (select) elements:
+   const select = await page.getByRole('combobox', { name: `${translation.widgetAnimation}` });
+
+
+4. Test setup:
+Include navigation and fetching translations in a beforeEach hook to ensure the page and translations are ready before running each test.
+Base URL: https://admin.prod.buerokratt.ee. Add this before the url provided in the DSL under resource header.
+Translations should be defined as:
+  import { getTranslations } from '@translation/languageDetector.js';
+  let translation;
+
+And in beforeEach:
+translation = await getTranslations(page);
+Translation should be after the playwright test has gone to the page to avoid security error.
+Include a 3000ms timeout in the beforeEach to ensure all elements load properly.
+
+5. Logical grouping:
+Group tests using test.describe() by logical parts (e.g., headings, card body, footer).
+The output should be a valid Playwright test file, ready for copy-pasting and running without further modification."
