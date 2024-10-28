@@ -1,0 +1,34 @@
+resource: chat/session-length
+description: "Session Length"
+test:
+  main:
+  heading:
+    args:
+      - type: text
+      - value: "Session length"
+      - style: h1
+
+    card:
+      name: card__body
+
+      label:
+        args:
+            - type: text
+            - value: "Session Length"
+            - style: label
+            - selector: input
+
+      input:
+        args:
+            - type: number
+            - style: input
+            - adjacentTo: label
+            - selector: input__wrapper
+            
+
+      name: card__footer
+      button:
+        args:
+            - type: button
+            - value: "Save"
+            - style: button
