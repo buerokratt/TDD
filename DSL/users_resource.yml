@@ -37,7 +37,6 @@ test:
       body:
         row:
         data:
-          has_data: true
         button:
            args:
                - type: button

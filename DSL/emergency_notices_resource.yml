@@ -15,7 +15,6 @@ test:
         args:
           - type: button
           - style: switch
-          - adjacentTo: label
 
       textarea:
         label: "Notice"
