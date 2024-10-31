@@ -50,18 +50,12 @@ jobs:
       - name: Parse failed tests
         id: parse_tests
         run: |
-          # Collect failed tests into an array
           FAILED_TESTS=$(jq -c '[.suites[]?.specs[]? | select(.tests[]?.results[-1].status == "failed") | 
           {title: .title, error: .tests[]?.results[-1].error.message, repository: (.tests[]?.annotations[]? | select(.type == "repository") | .description)}]' playwright-report.json)
           
           echo "Failed tests: $FAILED_TESTS"
 
           echo "FAILED_TESTS=$FAILED_TESTS" >> $GITHUB_ENV
-
-      - name: Debug failed tests output
-        run: |
-          echo "Raw failed tests output:"
-          echo "$FAILED_TESTS"
 
       - name: Get Project ID, Field ID, and Ready Option ID
         id: get_project_field_and_option_id
@@ -73,8 +67,6 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{\"query\":\"query { organization(login: \\\"$ORGANIZATION\\\") { projectV2(number: $PROJECT_NUMBER) { id fields(first: 20) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } } } } }\"}" \
             https://api.github.com/graphql)
-
-          echo "Project and fields response: $project_response"
 
           PROJECT_ID=$(echo "$project_response" | jq -r '.data.organization.projectV2.id')
           FIELD_ID=$(echo "$project_response" | jq -r '.data.organization.projectV2.fields.nodes[] | select(.name == "'"$FIELD_NAME"'") | .id')
@@ -121,7 +113,7 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/search/issues?q=repo:buerokratt/$TARGET_REPOSITORY+is:issue+is:open+in:title+$ENCODED_TEST_NAME")
 
-            echo "Search response: $search_response"  # Print full response for debugging
+            echo "Search response: $search_response"  # DEBUGGING
 
             issue_count=$(echo "$search_response" | jq -r '.total_count')
             if [ "$issue_count" == "null" ] || [ -z "$issue_count" ]; then
@@ -136,7 +128,6 @@ jobs:
 
             echo "Creating new issue for failed test: $TEST_NAME"
 
-            # Prepare the issue body with initial details
             ISSUE_BODY="A test failed in buerokratt/TDD-Playwright.
           
           Details:
@@ -160,8 +151,6 @@ jobs:
               -d "$JSON_PAYLOAD" \
               https://api.github.com/repos/buerokratt/$TARGET_REPOSITORY/issues)
 
-            echo "Issue creation response: $response"  # Debugging issue creation
-
             ISSUE_ID=$(echo "$response" | jq -r '.id')
             ISSUE_NUMBER=$(echo "$response" | jq -r '.number')
             if [ "$ISSUE_ID" == "null" ] || [ -z "$ISSUE_ID" ]; then
@@ -171,7 +160,6 @@ jobs:
 
             echo "Created issue #$ISSUE_NUMBER for failed test: $TEST_NAME"
 
-            # Get the global ID of the issue for project assignment
             issue_id_response=$(curl -s -X POST \
               -H "Authorization: bearer ${{ secrets.BYK_PAT }}" \
               -H "Content-Type: application/json" \
@@ -185,7 +173,6 @@ jobs:
               continue
             fi
 
-            # Add issue to project board
             project_item_response=$(curl -s -X POST \
               -H "Authorization: bearer ${{ secrets.BYK_PAT }}" \
               -H "Content-Type: application/json" \
@@ -199,7 +186,6 @@ jobs:
               continue
             fi
 
-            # Update field to "Ready"
             update_field_response=$(curl -s -X POST \
               -H "Authorization: bearer ${{ secrets.BYK_PAT }}" \
               -H "Content-Type: application/json" \
