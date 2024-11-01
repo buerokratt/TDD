@@ -21,6 +21,14 @@
     const container = page.locator('.card');
     const label = container.locator(`${translation.widgetProactiveSeconds}`, { exact: true });
 
+    const cardBody = page.locator('.card__body');
+    const trackBody = cardBody.locator('.track');
+    const dayLabel = cardBody.getByText(`${translation[day]}`, { exact: true });
+    const daySwitch = cardBody.getByText(`${translation[day]}`, { exact: true }).locator('div div.switch button');
+        
+    const startTimeInput = cardBody.getByLabel(`${translation[day]}`, { exact: true }).locator('.endTime');
+    const endTimeInput = cardBody.getByLabel(`${translation[day]}`, { exact: true }).locator('.startTime');
+
 3. Dropdown handling: 
    Use the following format for dropdown (select) elements:
    const select = await page.getByRole('combobox', { name: `${translation.widgetAnimation}` });
