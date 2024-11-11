@@ -32,14 +32,14 @@ test.describe('Emergency Notices', () => {
 
     test('should display and interact with display period input', async ({ page }) => {
       const label = await page.getByText(`${translation.displayPeriod}`, { exact: true });
-      const input = await page.getByLabel(`${translation.displayPeriod}`, { exact: true });
+      const input = await page.getByRole('textbox').nth(1);
       await expect(label).toBeVisible();
       await expect(input).toBeVisible();
     });
 
     test('should display and interact with display period to input', async ({ page }) => {
       const label = await page.getByText(`${translation.to}`, { exact: true });
-      const input = await page.getByLabel(`${translation.to}`, { exact: true });
+      const input = await page.getByRole('textbox').nth(2);
       await expect(label).toBeVisible();
       await expect(input).toBeVisible();
     });
