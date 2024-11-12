@@ -42,7 +42,8 @@ test.describe('Functionality Tests for "Välimus ja käitumine"/"Appearance and 
     test('Test Primary Color Picker', async ({ page }) => {
         const widgetColorInput = await page.getByLabel(`${translation.widgetColor}`, { exact: true });
         await widgetColorInput.click();
-        await page.locator('.saturation-black').click();
+        const colorPickerInput = await page.getByLabel('hex');
+        colorPickerInput.fill('#414181');
         await expect(widgetColorInput).toHaveValue('#414181');
     });
 
@@ -58,29 +59,38 @@ test.describe('Functionality Tests for "Välimus ja käitumine"/"Appearance and 
         await expect(mockWidget).toBeVisible();
     });
 
-    test.only('Check functionality of all fields and "Eelvaade" button', async ({ page }) => {
+    test('Check functionality of all fields and "Eelvaade" button', async ({ page }) => {
+        // Fill in the animation duration
         const proactiveSecondsInput = await page.getByLabel(`${translation.widgetProactiveSeconds}`, { exact: true });
         await proactiveSecondsInput.fill('5')
 
+        // Toggle the notification switch
         const bubbleMessageSwitch = await page.getByRole('switch', { name: `${translation.widgetBubbleMessageText}` }).nth(0);
         if (await bubbleMessageSwitch.getAttribute('data-state') === 'unchecked') {
             await bubbleMessageSwitch.click();
         }
 
+        // Fill in the animation start time
         const bubbleMessageSecondsInput = await page.getByLabel(`${translation.widgetBubbleMessageSeconds}`, { exact: true });
         await bubbleMessageSecondsInput.fill('1');
 
+        // Fill in the notification message
         const bubbleMessageTextInput = await page.getByText(`${translation.widgetBubbleMessageText}`).nth(1);
         await bubbleMessageTextInput.fill('Hello, welcome to the chatbot!');
 
+        // Select widget color
         const widgetColorInput = await page.getByLabel(`${translation.widgetColor}`, { exact: true });
         await widgetColorInput.click();
         const colorPickerInput = await page.getByLabel('hex');
         colorPickerInput.fill('#414181');
 
+        // Select from the dropdown
         await page.getByRole('combobox', { name: `${translation.widgetAnimation}` }).click();
         await page.getByRole('option', { name: 'Jump' }).click();
+
+        // Click preview button
         await page.getByText(`${translation.preview}`, { exact: true }).click();
+
         await page.waitForTimeout(5000);
 
         const mockWidget = await page.getByAltText('Buerokratt logo');
@@ -89,9 +99,11 @@ test.describe('Functionality Tests for "Välimus ja käitumine"/"Appearance and 
         if (bubbleMessageSwitch.getAttribute('data-state') === 'checked') {
             await expect(mockWidget.locator('.profile__greeting-message.profile__greeting-message--active')).toHaveText(bubbleMessageTextInput);
         } else {
+            // If the switch is off, ensure the message is not visible
             await expect(mockWidget.locator('.profile__greeting-message.profile__greeting-message--active')).not.toBeVisible();
         }
 
+        // Verify Animation Class for 'Jump'
         const animatedWidget = page.locator('.profile--jump');
         await expect(animatedWidget).toBeVisible();
 
