@@ -1,4 +1,3 @@
-// File path: tests/chat-active-functionality.spec.js
 import { test, expect } from '@playwright/test';
 import { getTranslations } from '@translation/languageDetector.js';
 import {
