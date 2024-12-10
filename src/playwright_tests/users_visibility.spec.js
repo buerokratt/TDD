@@ -3,59 +3,73 @@ import { getTranslations } from '@translation/languageDetector.js';
 
 let translation;
 
-test.describe('Users Page Tests', () => {
+test.describe('Users', () => {
     test.beforeEach(async ({ page }) => {
+        test.info().annotations.push({ type: 'repository', description: 'Buerokratt-Chatbot' });
+
+        // Navigate to the page
         await page.goto('https://admin.prod.buerokratt.ee/chat/users');
-        await page.waitForTimeout(3000);
+
+        // Fetch translations
         translation = await getTranslations(page);
+
+        // Wait for elements to load
+        await page.waitForTimeout(3000);
     });
 
-    test.describe('Page Heading', () => {
-        test('should display the heading', async ({ page }) => {
-            const heading = await page.getByRole('heading', { name: `${translation.users}` });
-            await expect(heading).toBeVisible();
+    test('should display the heading', async ({ page }) => {
+        const heading = await page.getByRole('heading', {
+            name: `${translation.users}`,
+            exact: true,
         });
+        await expect(heading).toBeVisible();
     });
 
-    test.describe('Add User Button', () => {
-        test('should display the "Add User" button', async ({ page }) => {
-            const addUserButton = await page.getByText(`${translation.addUser}`);
-            await expect(addUserButton).toBeVisible();
-        });
+    test('should display the Add User button', async ({ page }) => {
+        const addButton = await page.getByText(`${translation.addUser}`, { exact: true });
+        await expect(addButton).toBeVisible();
     });
 
-    test.describe('User Data Table', () => {
-        test('should display table headers', async ({ page }) => {
-            const container = page.locator('.card__body');
-            const nameHeader = container.getByText(`${translation.name}`);
-            const idCodeHeader = container.getByText(`${translation.idCode}`);
-            const roleHeader = container.getByText(`${translation.role}`);
-            const displayNameHeader = container.getByText(`${translation.displayName}`);
-            const userTitleHeader = container.getByText(`${translation.userTitle}`);
-            const emailHeader = container.getByText(`${translation.email}`);
-            await expect(nameHeader).toBeVisible();
-            await expect(idCodeHeader).toBeVisible();
-            await expect(roleHeader).toBeVisible();
-            await expect(displayNameHeader).toBeVisible();
-            await expect(userTitleHeader).toBeVisible();
-            await expect(emailHeader).toBeVisible();
-        });
+    test('should display the table headers', async ({ page }) => {
+        const cardBody = page.locator('.card__body');
+        const tableHeaders = cardBody.locator('thead th');
 
-        test('should display edit and delete buttons for first row', async ({ page }) => {
-            const container = page.locator('.card__body');
-            const editButton = container.getByRole('button', { name: `${translation.edit}` }).first();
-            const deleteButton = container.getByRole('button', { name: `${translation.delete}` }).first();
-            await expect(editButton).toBeVisible();
-            await expect(deleteButton).toBeVisible();
-        });
+        const expectedHeaders = [
+            translation.name,
+            translation.idCode,
+            translation.role,
+            translation.displayName,
+            translation.userTitle,
+            translation.email,
+        ];
+
+        for (let i = 0; i < expectedHeaders.length; i++) {
+            const header = tableHeaders.nth(i);
+            await expect(header).toHaveText(expectedHeaders[i]);
+            await expect(header).toBeVisible();
+        }
     });
 
-    test.describe('Pagination Controls', () => {
-        test('should display result count label and dropdown', async ({ page }) => {
-            const resultCountLabel = await page.getByText(`${translation.resultCount}`);
-            const resultCountDropdown = await page.getByRole('combobox', { name: `${translation.resultCount}` });
-            await expect(resultCountLabel).toBeVisible();
-            await expect(resultCountDropdown).toBeVisible();
-        });
+    test('should display the table rows and action buttons', async ({ page }) => {
+        const cardBody = page.locator('.card__body');
+        const tableBody = cardBody.locator('tbody');
+        const firstRow = tableBody.getByRole('row').first();
+
+        await expect(firstRow).toBeVisible();
+
+        const editButton = firstRow.getByRole('button', { name: `${translation.edit}`, exact: true });
+        const deleteButton = firstRow.getByRole('button', { name: `${translation.delete}`, exact: true });
+
+        await expect(editButton).toBeVisible();
+        await expect(deleteButton).toBeVisible();
+    });
+
+    test('should display the pagination result count label and dropdown', async ({ page }) => {
+        const cardBody = page.locator('.card__body');
+        const resultCountLabel = cardBody.getByText(`${translation.resultCount}`, { exact: true });
+        const paginationDropdown = cardBody.getByRole('combobox', { name: `${translation.resultCount}` });
+
+        await expect(resultCountLabel).toBeVisible();
+        await expect(paginationDropdown).toBeVisible();
     });
 });
