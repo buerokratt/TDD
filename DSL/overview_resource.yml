@@ -13,73 +13,72 @@ test:
           - value: Edit
           - style: button
   main-metrics-area:
-    name: draggable_card
+    name: draggable-card
     heading: 
         args: 
             - type: text
             - value: "Average chats per day: month / previous"
-            - style: h2
+            - style: text
     heading:
         args:
             - type: text
             - format: integer / integer
             - style: h2
-    name: draggable_card
+    name: draggable-card
     heading: 
         args: 
             - type: text
             - value: "Average chats per day: week / previous"
-            - style: h2
+            - style: text
     heading:
         args:
             - type: text
             - format: integer / integer
             - style: h2
-    name: draggable_card
+    name: draggable-card
     heading: 
         args: 
             - type: text
             - value: "Average chats answered by Bürokrat: month / previous"
-            - style: h2
+            - style: text
     heading:
         args:
             - type: text
             - format: integer / integer
             - style: h2
-    name: draggable_card
+    name: draggable-card
     heading: 
         args: 
             - type: text
             - value: "Average chats answered by Bürokrat: week / previous"
-            - style: h2
+            - style: text
     heading:
         args:
             - type: text
             - format: integer / integer
             - style: h2
-    name: draggable_card
+    name: draggable-card
     heading: 
         args: 
             - type: text
             - value: "Answered by Bürokrat: today / yesterday"
-            - style: h2
+            - style: text
     heading:
         args:
             - type: text
             - format: integer / integer
             - style: h2
-    name: draggable_card
+    name: draggable-card
     heading: 
         args: 
             - type: text
             - value: "Number of chats: month / previous"
-            - style: h2
+            - style: text
     heading:
         args:
             - type: text
             - format: integer / integer
             - style: h2
-
   card: 
     name: card__header
     label: 
@@ -89,7 +88,7 @@ test:
           - style: h3
     name: card__body
     has_chart: true
-
+    chart_class: "recharts-wrapper"
   card: 
     name: card__header
     label:
