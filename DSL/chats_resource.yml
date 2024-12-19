@@ -37,11 +37,18 @@ test:
                 - type: button
                 - value: Selected Months
                 - style: button
-        - button:
-              args:
-                - type: button
-                - value: Selected Period
-                - style: button
+        button:
+          args:
+            - type: button
+            - value: Selected Period
+            - style: button
+            - action: open-datepickers
+            - adjacentElements:
+                - type: datepicker
+                - selector: nth(0)
+                - type: text
+                - type: datepicker
+                - selector: nth(1)
 
         - name: section
         - label:
@@ -89,20 +96,23 @@ test:
                 - style: label
 
             checkbox:
+              label: "Only Bürokratt involved"
               args:
                 - type: checkbox
-                - value: Only Bürokratt involved
                 - style: checkbox
+                - adjacentTo: label
             checkbox:
+              label: "CSA involved"
               args:
                 - type: checkbox
-                - value: CSA involved
                 - style: checkbox
+                - adjacentTo: label
             checkbox:
+              label: "Total"
               args:
                 - type: checkbox
-                - value: Total
                 - style: checkbox
+                - adjacentTo: label
 
     card:
         - name: card__header
@@ -121,6 +131,7 @@ test:
         select:
         args:
             - type: dropdown
+            - default: Bar Chart
             - options:
                 - value: Bar Chart
                 - value: Pie Chart

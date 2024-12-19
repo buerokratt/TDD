@@ -15,15 +15,14 @@ test:
         args:
           - type: button
           - style: switch
-
+          - adjacentTo: label
 
       textarea:
         label: "Welcome Message"
         args:
           - type: text
           - style: textarea
-
-          
+          - adjacentTo: label
       name: card__footer
       button:
         args:
