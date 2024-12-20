@@ -105,8 +105,8 @@ There are some edge cases. These usually have deeper div structure that require 
 
 # How to use business.yml files to generate Playwright tests?
 
-- First copy and paste the business.yml file to chatGPT. 
+- First copy and paste the corresponding *.yml file to chatGPT.
 
-- Then take the whole of the prompt from the root folder and copy and paste it after the .yml file.
+- Then take the whole of the prompt from the root folder and copy and paste it after the .yml file. If the prompt doesn't exist in the folder, use promptFunc or promtVis (according to need) instead. 
 
-- Add that you want visibility tests. (Functionality tests generation have not been implemented yet)
+- Add whether you want visibility tests or functionality tests to the chatGPT window as well.
