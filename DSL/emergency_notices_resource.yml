@@ -15,7 +15,6 @@ test:
         args:
           - type: button
           - style: switch
-          - adjacentTo: label
 
       textarea:
         label: "Notice"
@@ -30,11 +29,13 @@ test:
           - style: label
       
       input:
+        label: "Display period"
         args:
           - type: date
           - opens_datePicker: true
 
       input:
+        label: "to"
         args:
           - type: date
           - opens_datePicker: true

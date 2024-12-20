@@ -59,33 +59,43 @@ test:
         - args:
             - type: text
             - value: "Start time"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "End time"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "Customer support name"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "Name"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "ID code"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "Contact"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "Comment"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "Label"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "Status"
+            - has_sort_button: true
         - args:
             - type: text
             - value: "ID"
+            - has_sort_button: true
       body:
         row:
           data:
@@ -95,23 +105,6 @@ test:
               - type: button
               - value: "View"
               - style: button
-
-    pagination:
-      label:
-        args:
-          - type: text
-          - value: "Result count"
-          - style: label
-      select:
-        args:
-          - type: dropdown
-          - style: select
-          - options:
-              - value: "10"
-              - value: "20"
-              - value: "30"
-              - value: "40"
-              - value: "50"
 
     drawer:
       name: drawer__title   
@@ -129,3 +122,20 @@ test:
           - type: text
           - style: messages
         has_data: true
+
+    pagination:
+      label:
+        args:
+          - type: text
+          - value: "Result count"
+          - style: label
+      select:
+        args:
+          - type: dropdown
+          - style: select
+          - options:
+              - value: "10"
+              - value: "20"
+              - value: "30"
+              - value: "40"
+              - value: "50"
